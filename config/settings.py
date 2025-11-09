@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure-!#o_v0(!5c1ja77fnds+s$eth7)16k%&5x_%_$vj5l5g6k1hkf
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 INSTALLED_APPS = [
@@ -84,9 +84,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Singapore'
@@ -99,7 +96,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = (BASE_DIR / 'static', )
 
 MEDIA_URL = '/media/'
 
