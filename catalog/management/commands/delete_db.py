@@ -4,7 +4,7 @@ from catalog.models import Category, Product
 
 
 class Command(BaseCommand):
-    help = 'Load test data from fixture'
+    help = "Load test data from fixture"
 
     def handle(self, *args, **kwargs):
         # Удаляем существующие записи
