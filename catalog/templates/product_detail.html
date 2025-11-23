@@ -18,12 +18,9 @@
                             <li class="list-group-item text-end"><p class="opacity-75 ">Название модели: </p> {{ info.name }}</li>
                             <li class="list-group-item"><p class="opacity-75 text-end">Описание: </p>{{ info.description }}</li>
                             <li class="list-group-item text-end"><p class="opacity-75">Категория товара:</p> {{ info.category }}</li>
-                            <li class="list-group-item"><p class="opacity-75 text-end">Описание: </p>{{ info.description }}</li>
                             <li class="list-group-item text-end"><p class="opacity-75">Цена:</p> {{ info.purchase_price }}  руб.</li>
-                            <li class="list-group-item text-end"><p class="opacity-75">Дата публикации: </p>{{ info.created_at|date:"d M Y" }}
-                            </li>
-                            <li class="list-group-item text-end"><p class="opacity-75">Дата последнего изменения публикации: </p>{{ info.updated_at|date:"d M Y" }}
-                            </li>
+                            <li class="list-group-item text-end"><p class="opacity-75">Дата публикации: </p>{{ info.created_at|date:"d M Y" }}</li>
+                            <li class="list-group-item text-end"><p class="opacity-75">Дата последнего изменения публикации: </p>{{ info.updated_at|date:"d M Y" }}</li>
                         </ul>
                     </div>
                 </div>
