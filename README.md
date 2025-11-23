@@ -94,6 +94,25 @@ django-admin startproject config .
 ```commandline
 django-admin startproject myproject
 ```
+
+Создание приложения 
+```commandline
+python manage.py startapp app_name
+```
+Создание миграций
+```commandline
+python manage.py makemigrations
+```
+Применение миграций
+```commandline
+python manage.py migrate
+```
+Создайте администратора
+```commandline
+python manage.py createsuperuser
+```
+
+
 ## Запуск сервера
 
 ```commandline
