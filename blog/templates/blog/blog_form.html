@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<div class="container bg-image shadow p-3 mb-5 bg-body-tertiary rounded">
+    <h1 class="text-center fw-bold"> Добавить статью </h1>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <form class="row" method="post" enctype="multipart/form-data">
+                    <div class="card-body">
+                        {% csrf_token %}
+                        {{ form.media }}
+                        {{ form.as_p }}
+                    </div>
+                    <div class="col-2"></div>
+                    <button type="submit" class="btn btn-primary my-4">
+                        {% if object %}
+                        Сохранить
+                        {% else %}
+                        Создать
+                        {% endif %}
+                    </button>
+                    <a class="btn btn-dark my-4" href="{% url 'blog:blog_list' %}">Отменить</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

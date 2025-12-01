@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="container shadow bg-body-tertiary rounded">
+<div class="container p-2">
+    <h1 class="text-center p-3">{{ object.title }}</h1>
+    <div class="row ">
+        {% if object.preview %}
+        <div class="card mb-3 mx-auto" style="max-width: 95%;">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-end"><p class="opacity-75 ">Название статьи: </p> <h3 class="text-center">{{ object.title }}</h3>
+                            </li>
+                        </ul>
+                     <div><img class="row object-fit-cover mx-auto my-3" style="height: 400px; width: auto;"
+                         src="{{ blog.preview|media_filter }}" alt="{{ blog.title }}">
+                     </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><p class="opacity-75 text-end">Содержание: </p>{{ object.content | safe }}
+                            </li>
+                            <li class="list-group-item text-end"><p class="opacity-75">Дата создания:</p> {{ object.created_at|date:"d M Y" }}
+                            </li>
+                            <li class="list-group-item text-end"><p class="opacity-75">Дата последнего изменения:</p> {{ object.updated_at|date:"d M Y" }}
+                            </li>
+                            <li class="list-group-item text-end"><p class="opacity-75">Количество просмотров: </p>{{ object.views_count }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'blog:blog_list'%}" class="btn btn-dark">К списку статей</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}
