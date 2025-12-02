@@ -1,0 +1,30 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+<div class="container bg-image my-5 shadow p-3 mb-5 bg-body-tertiary rounded">
+    <h1 class="text-center">{{ object.name }}</h1>
+    <div class="row ">
+        <div class="col">
+            <form class="row" method="post" enctype="multipart/form-data">
+                <div class="carf">
+                    <p class="card-text text-center fs-3">Действительно хотите удалить {{object.name}} ?</p>
+                    <div class="card-body">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                    </div>
+                </div>
+
+
+
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-danger my-4">
+                        Удалить
+                    </button>
+                    <a class="btn btn-dark" href="{% url 'catalog:product_list' %}">Отменить</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
