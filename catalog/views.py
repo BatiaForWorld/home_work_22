@@ -1,42 +1,70 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView, DeleteView, View
 from django.http import HttpResponse
 
 from catalog.models import Category, Product
 
 
-def index(request):
-    products = Product.objects.all()
-    context = {
-        "products": products,
-    }
-    return render(request, "index.html", context)
+class IndexListView(ListView):
+    model = Product
+    template_name = 'catalog/index.html'
 
 
-def category(request):
-    categories = Category.objects.all()
-    context = {"categories": categories}
-    return render(request, "category.html", context)
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'catalog/category.html'
 
 
-def product(request):
-    products = Product.objects.all()
-    context = {"products": products}
-    return render(request, "product.html", context)
+class ProductListView(ListView):
+    model = Product
 
 
-def product_detail(request, pk):
-    info = get_object_or_404(Product, pk=pk)
-    context = {"info": info}
-    return render(request, "product_detail.html", context)
+class ProductDetailView(DetailView):
+    model = Product
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        self.object.views_counter += 1
+        self.object.save()
+        return self.object
 
 
-def contacts(request):
-    if request.method == "POST":
+class ProductCreateView(CreateView):
+    model = Product
+    fields = ('name', 'description', 'image', 'purchase_price', 'category')
+    success_url = reverse_lazy('catalog:product_list')
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    fields = ('name', 'description', 'image', 'purchase_price', 'category')
+    success_url = reverse_lazy('catalog:product_list')
+
+    def get_success_url(self):
+        return reverse('catalog:product_detail', args=[self.kwargs.get('pk')])
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:product_list')
+
+
+class ContactsView(View):
+    template_name = "catalog/contacts.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
         name = request.POST.get("name")
         message = request.POST.get("message")
         return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
-    return render(request, "contacts.html")
+
+
+class SignTemplateView(TemplateView):
+    template_name = "catalog/sign.html"
 
 
 def sign(request):
-    return render(request, "sign.html")
+    return render(request, "")
