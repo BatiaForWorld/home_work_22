@@ -1,8 +1,8 @@
 {% extends 'catalog/base.html' %}
-{% block title %}Добавить/Редактировать товар{% endblock %}
+{% block title %}Вход на сайт{% endblock %}
 {% block content %}
 <div class="container bg-image my-5 shadow p-3 mb-5 bg-body-tertiary rounded">
-    <h1 class="text-center fw-bold card box-shadow"> Добавить товар </h1>
+    <h1 class="text-center fw-bold card box-shadow"> Вход на сайт </h1>
     <div class="container my-5">
         <div class="row">
             <div class="col-2"></div>
@@ -14,13 +14,8 @@
                     </div>
                     <div class="col-2"></div>
                     <button type="submit" class="btn btn-primary my-4">
-                        {% if object %}
-                        Сохранить
-                        {% else %}
-                        Создать
-                        {% endif %}
+                        Войти
                     </button>
-                    <a class="btn btn-dark my-4" href="{% url 'catalog:product_list' %}">Отменить</a>
                 </form>
             </div>
         </div>
