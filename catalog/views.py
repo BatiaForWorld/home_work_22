@@ -1,9 +1,13 @@
+from django.core.mail import send_mail
+from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView, DeleteView, View
-from django.http import HttpResponse
+from django.contrib import messages
 from catalog.forms import ProductForm
 from catalog.models import Category, Product
+from django.contrib.auth.mixins import LoginRequiredMixin
+from config.settings import EMAIL_HOST_USER
 
 
 class IndexListView(ListView):
@@ -30,13 +34,13 @@ class ProductDetailView(DetailView):
         return self.object
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
@@ -58,8 +62,25 @@ class ContactsView(View):
 
     def post(self, request):
         name = request.POST.get("name")
-        message = request.POST.get("message")
-        return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
+        phone = request.POST.get("phone")
+        message_text = request.POST.get("message")
+
+        if not name or not message_text:
+            messages.error(request, "Имя и сообщение обязательны")
+            return render(request, self.template_name, request.POST)
+
+        subject = f"Сообщение от {name}"
+        message = f"Имя: {name}\nТелефон: {phone}\nСообщение:\n{message_text}"
+        from_email = EMAIL_HOST_USER
+        recipient_list = [EMAIL_HOST_USER]
+
+        try:
+            send_mail(subject, message, from_email, recipient_list)
+            messages.success(request, f"Спасибо, {name}! Ваше сообщение получено.")
+        except Exception as e:
+            messages.error(request, f"Ошибка при отправке: {e}")
+
+        return redirect(request.path)
 
 
 class SignTemplateView(TemplateView):
