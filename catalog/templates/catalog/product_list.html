@@ -28,8 +28,10 @@
                         <div class="btn-group">
                             <a class="btn btn-dark" href="{%url 'catalog:product_detail' product.pk%}">Перейти</a>
                             {% if user.is_authenticated %}
+                            {% if product.owner == user or perms.catalog.can_unpublish_product %}
                             <a class="btn btn-dark" href="{%url 'catalog:product_update' product.pk%}">Редактировать</a>
                             <a class="btn btn-dark" href="{%url 'catalog:product_delete' product.pk%}">удалить</a>
+                            {% endif %}
                             {% endif %}
                         </div>
                         <small class="text-body-secondary">{{ product.updated_at|date:"d M Y" }}</small>

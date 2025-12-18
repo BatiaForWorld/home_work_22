@@ -4,77 +4,57 @@ from catalog.models import Product
 from django.core.exceptions import ValidationError
 
 SPAM_WORDS = ['казино',
-                      'крипта',
-                      'биржа',
-                      'дешево',
-                      'бесплатно',
-                      'обман',
-                      'полиция',
-                      'радар',
-                      ]
+              'крипта',
+              'биржа',
+              'дешево',
+              'бесплатно',
+              'обман',
+              'полиция',
+              'радар',
+              ]
 
 
 class ProductForm(ModelForm):
     class Meta:
         model = Product
+        fields = ['name', 'description', 'image', 'category', 'purchase_price',]
         #        fields = "__all__" # для вывода всех полей !!Заметка для себя
-        exclude = ("views_counter",)  # для фильтрации отмены вывода поля
+        exclude = ("views_counter", "owner")  # для фильтрации отмены вывода поля
+
+
 
     def __init__(self, *args, **kwargs):
-        super(ProductForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control'})
 
-        self.fields['name'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Введите название товара'
-        })
-
-        self.fields['description'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Введите описание товара'
-        })
-
-        self.fields['image'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Добавьте фото товара'
-        })
-
-        self.fields['category'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Выберете категорию товара'
-        })
-
-        self.fields['purchase_price'].widget.attrs.update({
-            'class': 'form-control',
-            'placeholder': 'Введите стоимость товара'
-        })
-
-    def clean(self):
-        cleaned_data = super().clean()
-        name = cleaned_data.get('name')
-        description = cleaned_data.get('description')
-
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
         if name:
-            name_lower = name.lower()
             for word in SPAM_WORDS:
-                if word in name_lower:
-                    raise forms.ValidationError(
-                        f"Название товара не должно содержать запрещенное слово: '{word}'."
-                    )
+                if word in name.lower():
+                    raise forms.ValidationError(f"Название содержит запрещённое слово: {word}")
+        return name
 
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
         if description:
-            description_lower = description.lower()
             for word in SPAM_WORDS:
-                if word in description_lower:
-                    raise forms.ValidationError(
-                        f"Описание товара не должно содержать запрещенное слово: '{word}'."
-                    )
-        return cleaned_data
+                if word in description.lower():
+                    raise forms.ValidationError(f"Описание содержит запрещённое слово: {word}")
+        return description
 
     def clean_purchase_price(self):
         price = self.cleaned_data.get('purchase_price')
-
         if price < 0:
-            raise forms.ValidationError(
-                "Цена продукта не может быть отрицательной. Введите корректное значение."
-            )
+            raise forms.ValidationError("Цена не может быть отрицательной")
         return price
+
+class ProductModeratorForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = ['status']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['status'].widget.attrs.update({'class': 'form-check-input'})

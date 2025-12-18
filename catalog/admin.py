@@ -5,27 +5,44 @@ from django.contrib import admin
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = [
+    list_display = (
         "id",
         "name",
-    ]
-    list_filter = ("category",)
+    )
     search_fields = (
         "name",
         "description",
     )
+
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = [
+    list_display = (
         "id",
         "name",
         "purchase_price",
         "category",
-    ]
-    list_filter = ("category",)
+        "status",
+        "owner",
+        "created_at",
+    )
+
+    list_filter = (
+        "status",
+        "category",
+        "created_at",
+    )
+
     search_fields = (
         "name",
         "description",
     )
+
+    readonly_fields = (
+        "views_counter",
+        "created_at",
+        "updated_at",
+    )
+
+    autocomplete_fields = ("category",)
