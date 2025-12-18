@@ -1,7 +1,7 @@
 {% load static %}
 {% load my_tags %}
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="auto">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -96,6 +96,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 <main class="flex-grow-1">
+
     {% if is_mobile %}
     {% include "blog/includes/top_bar.html" %}
     {% else %}
@@ -106,7 +107,6 @@
 
     {% endblock %}
 </main>
-{% include 'catalog/includes/footer.html' %}
 <script src="{% static 'js/bootstrap.bundle.js' %}" class="astro-vvvwv3sm"></script>
 </body>
 </html>

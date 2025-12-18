@@ -4,15 +4,8 @@ from .models import Blog
 
 class BlogForm(forms.ModelForm):
 
-    content = forms.CharField(
-        widget=TinyMCE(
-            attrs={
-                "cols": 80,
-                "rows": 30,
-            }
-        )
-    )
+    content = forms.CharField(widget=TinyMCE())
 
     class Meta:
         model = Blog
-        fields = ('title', 'content', 'preview')
+        fields = ('title', 'content', 'preview', )
