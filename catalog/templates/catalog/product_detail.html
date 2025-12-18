@@ -20,6 +20,7 @@
                             <li class="list-group-item"><p class="opacity-75 text-end">Описание: </p>{{ object.description }}</li>
                             <li class="list-group-item text-end"><p class="opacity-75">Категория товара:</p> {{ object.category }}</li>
                             <li class="list-group-item text-end"><p class="opacity-75">Цена:</p> {{ object.purchase_price }}  руб.</li>
+                            <li class="list-group-item text-end"><p class="opacity-75">Опубликовал: </p>{{ object.owner }}</li>
                             <li class="list-group-item text-end"><p class="opacity-75">Дата публикации: </p>{{ object.created_at|date:"d M Y" }}</li>
                             <li class="list-group-item text-end"><p class="opacity-75">Дата последнего изменения публикации: </p>{{ object.updated_at|date:"d M Y" }}</li>
                         </ul>

@@ -1,0 +1,16 @@
+{% extends "catalog/base.html" %}
+{% load my_tags %}
+
+{% block title %}Доступ запрещён{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="alert alert-danger text-center shadow">
+        <h1 class="mb-3">🚫 Доступ запрещён</h1>
+        <p class="fs-5">У вас нет прав доступа к этой странице.</p>
+        <a href="{% url 'catalog:product_list' %}" class="btn btn-dark mt-3">
+            Вернитесь назад
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -2,6 +2,9 @@ from django.conf import settings
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import path, include
+from catalog.views import permission_denied_view
+
+handler403 = permission_denied_view
 
 urlpatterns = [
                   path("admin/", admin.site.urls),
