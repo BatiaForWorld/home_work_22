@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.core.mail import send_mail
 from django.shortcuts import redirect
@@ -19,6 +20,42 @@ class IndexListView(ListView):
 class CategoryListView(ListView):
     model = Category
     template_name = 'catalog/category.html'
+
+
+CACHE_TTL = 60 * 5
+
+
+class CategoryProductListView(ListView):
+    model = Product
+    template_name = 'catalog/category_products.html'
+    context_object_name = 'object_list'
+    paginate_by = 9
+
+    def get_queryset(self):
+        category_id = self.kwargs.get('pk')
+        category = Category.objects.get(pk=category_id)
+        user = self.request.user
+
+        self.category = category
+        cache_key = f'category_products_{category_id}_user_{user.pk if user.is_authenticated else "anon"}'
+        products = cache.get(cache_key)
+        if products is not None:
+            return products
+
+        qs = Product.objects.filter(category=category)
+        if not user.is_authenticated:
+            qs = qs.filter(status=True)
+        elif not user.has_perm('catalog.can_unpublish_product'):
+            qs = qs.filter(status=True) | qs.filter(owner=user)
+
+        products = list(qs)
+        cache.set(cache_key, products, CACHE_TTL)
+        return products
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = getattr(self, 'category', None)
+        return context
 
 
 class ProductListView(ListView):
@@ -52,7 +89,6 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
         obj.views_counter += 1
         obj.save()
         return obj
-
 
 
 class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -93,7 +129,6 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         if user == product.owner or user.has_perm('catalog.can_unpublish_product'):
             return super().dispatch(request, *args, **kwargs)
         raise PermissionDenied
-
 
 
 class ContactsView(View):
