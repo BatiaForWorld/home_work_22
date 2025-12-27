@@ -306,6 +306,10 @@ Ctrl + C
 ```commandline
 python manage.py delete_db
 ```
+Создать Администратора
+```commandline
+python manage.py csu
+```
 Создать группу модераторов
 ```commandline
 python manage.py create_moderators

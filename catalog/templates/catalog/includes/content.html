@@ -12,7 +12,7 @@
                 {% if header_products %}
                 {% for product in header_products %}
                 <ul class="list-group opacity-95">
-                    <li class="list-group-item text-start"><a href="{% url 'catalog:product_detail' product.pk %}">{{product.name|truncatechars:20}} </a>
+                    <li class="list-group-item text-start"><a href="{% url 'catalog:product_detail' product.pk %}">{{product.name|truncatechars:35}} </a>
                         <p> {{product.description|truncatechars:100}}</p></li>
                     {% empty %}
                     <li class="text-muted">Пока нет продуктов</li>
